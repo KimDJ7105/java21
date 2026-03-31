@@ -1,4 +1,4 @@
-package exam06_Conditional;
+package exam06_ControlStatement;
 import java.util.Scanner;
 
 

@@ -1,4 +1,4 @@
-package exam06_Conditional;
+package exam06_ControlStatement;
 
 public class Statement03_switch {
 

@@ -1,6 +1,6 @@
-package exam06_Conditional;
+package exam06_ControlStatement;
 
-public class Statement00_singleif {
+public class Statement01_if_else {
 
 	public static void main(String[] args) {
 		int num = 5;
@@ -8,9 +8,10 @@ public class Statement00_singleif {
 		
 		System.out.println("문장 1");
 
-		if(num == 5) System.out.println("문장 2");
-		
-		if(num < 5) {
+		if(num == 5) {
+			System.out.println("문장 2");
+		}
+		else {
 			System.out.println("문장 3");
 			System.out.println("문장 4");
 		}
