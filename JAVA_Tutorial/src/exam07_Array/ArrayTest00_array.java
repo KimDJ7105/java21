@@ -11,11 +11,21 @@ public class ArrayTest00_array {
 			arr[i] = i; // index를 통해 접근 가능 
 		}
 		
-		String [] str_arr = new String [3];
+		// 배열 생성 방법 2
+		String [] str_arr = {"홍길동", "이순신", "유관순"};
 		
-		str_arr[0] = "홍길동";
-		str_arr[1] = "임꺽정";
-		str_arr[2] = "넌뭐야";
+		// length 를 사용해서 배열 크기 확인 가능
+		for(int i = 0 ; i < str_arr.length ; ++i) {
+			System.out.println(str_arr[i]);
+		}
+		
+		// 배열 생성 방법 3
+		int [] num;
+		num = new int [] {10,20,30};
+		
+		for(final int n : num) {
+			System.out.println(n);
+		}
 	}
 
 }
