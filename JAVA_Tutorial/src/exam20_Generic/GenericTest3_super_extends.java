@@ -30,11 +30,20 @@ public class GenericTest3_super_extends {
 		printData(list3);
 		//printData(list2);
 		//사용 불가
+		
+		printData2(list);
+		printData2(list2);
+		printData2(list3);
 	}
 	
 	//전달하는 데이터 타입 및 부모만 가능하게 하기
 	//Cat 혹은 Cat의 부모만 가능
 	public static void printData(List<? super Cat> list) {
+		System.out.println(list);
+	}
+	
+	//pet과 pet의 자식들만 사용 가능
+	public static void printData2(List<? extends Pet> list) {
 		System.out.println(list);
 	}
 	
