@@ -29,3 +29,20 @@ HAVING min(sal) > (SELECT min(sal) FROM emp WHERE deptno = 20);
 select empno, ename, job, hiredate, sal, deptno
 from emp
 where sal IN (select min(sal) from emp group by job);
+
+-- 매니저 직무의 최소 급여보다 적게 받는 직원 정보
+select empno, ename, job, sal
+from emp
+where sal < ALL (select sal from emp where job = 'manager');
+-- 서브 쿼리 결과 manager 직원들의 급여 테이블이 리턴됨
+-- 급여 테이블의 모든 데이터보다 작은 경우를 검색 결과로 지정. 
+
+select empno, ename, job, hiredate, sal, deptno
+from emp
+where sal IN (select min(sal) from emp group by job);
+
+-- 매니저 직무의 최대 급여보다 적게 받는 직원
+select empno, ename, job, sal
+from emp
+where sal < ANY (select sal from emp where job = 'manager');
+-- 서브 쿼리의 결과 테이블 중 어느 하나라도 더 큰게 있는 경우
