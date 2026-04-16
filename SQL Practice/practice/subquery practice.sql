@@ -46,3 +46,15 @@ select empno, ename, job, sal
 from emp
 where sal < ANY (select sal from emp where job = 'manager');
 -- 서브 쿼리의 결과 테이블 중 어느 하나라도 더 큰게 있는 경우
+
+select *
+from emp
+where exists (select ename from emp where sal = 500);
+-- exists 는 서브 쿼리 결과가 있는 경우에만 메인 쿼리가 실행된다. 
+
+-- emp와 dept 테이블에서 부서별 sal 총합과 평균 출력 
+SELECT e.deptno, total_sum, total_avg, cnt
+FROM ( SELECT deptno, SUM(sal) total_sum, ROUND(AVG(sal)) total_avg,
+COUNT(*) cnt
+FROM emp
+GROUP BY deptno) e JOIN dept d ON e.deptno = d.deptno; 
