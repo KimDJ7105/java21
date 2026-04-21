@@ -30,12 +30,14 @@ public class UpdateTest {
 			con = DriverManager.getConnection(url, userid,passwd);
 			
 			// sql문 작성
-			String sql = "Delete from dept where deptno=?";
+			String sql = "update dept set dname=?, loc=? where deptno=?";
 			
 			// ? 로 이후에 데이터를 삽입 가능
 			pstmt = con.prepareStatement(sql);
 			// pstmt.setXXX(?위치, 값);
-			pstmt.setInt(1, 60);
+			pstmt.setString(1,"Humint");
+			pstmt.setString(2,"Jehudo");
+			pstmt.setInt(3, 60);
 			
 			int n = pstmt.executeUpdate();
 		
