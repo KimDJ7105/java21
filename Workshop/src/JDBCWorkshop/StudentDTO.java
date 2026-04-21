@@ -1,4 +1,4 @@
-package JDBCWorkshop01;
+package JDBCWorkshop;
 
 import java.util.Date;
 

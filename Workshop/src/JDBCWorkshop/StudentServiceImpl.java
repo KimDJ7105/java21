@@ -1,4 +1,4 @@
-package JDBCWorkshop01;
+package JDBCWorkshop;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -54,5 +54,51 @@ public class StudentServiceImpl implements StudnetService {
 		
 	} // list()
 
+	@Override
+	public List<StudentDTO> list(String target) {
+		List<StudentDTO> list = null;
+		
+		Connection con = null;
+		// DB와 연결
+		try {
+			con = DriverManager.getConnection(url, userid,passwd);
+			list = dao.list(con, target);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+		
+	} // list(String)
 	
+	@Override
+	public List<StudentDTO> list(String begin, String end) {
+		List<StudentDTO> list = null;
+		
+		Connection con = null;
+		// DB와 연결
+		try {
+			con = DriverManager.getConnection(url, userid,passwd);
+			list = dao.list(con, begin, end);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+		
+	} // list(String, String)
 }
