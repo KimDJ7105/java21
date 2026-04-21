@@ -101,4 +101,95 @@ public class StudentServiceImpl implements StudnetService {
 		return list;
 		
 	} // list(String, String)
+	
+	@Override
+	public List<StudentDTO> list(String[] nums) {
+		List<StudentDTO> list = null;
+		
+		Connection con = null;
+		// DB와 연결
+		try {
+			con = DriverManager.getConnection(url, userid,passwd);
+			list = dao.list(con, nums);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+		
+	} // list(String[])
+	
+	@Override
+	public int update(String[] nums) throws RecordNotFoundException {
+		
+		Connection con= null;
+		int n = 0;
+		try {
+			con = DriverManager.getConnection(url, userid,passwd);
+			n = dao.update(con, nums);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(con != null) con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return n;
+	} // update(string[])
+	
+	@Override
+	public int updateDept() {
+		
+		Connection con= null;
+		int n = 0;
+		try {
+			con = DriverManager.getConnection(url, userid,passwd);
+			n = dao.updateDept(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(con != null) con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return n;
+	} // updateDept()
+	
+	@Override
+	public List<GradeDTO> listGrade(String target) {
+		List<GradeDTO> list = null;
+		
+		Connection con = null;
+		// DB와 연결
+		try {
+			con = DriverManager.getConnection(url, userid,passwd);
+			list = dao.listGrade(con, target);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	} //listGrade
 }

@@ -22,6 +22,7 @@ public class StudentDTO {
 		this.entrance_date = entrance_date;
 		this.absence_yn = absence_yn;
 	}
+	
 	public String getStudent_no() {
 		return student_no;
 	}
