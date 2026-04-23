@@ -6,7 +6,10 @@
   <!--xml 주석-->
   <!-- jdbc.properties 등록-->
   <properties resource="com/config/jdbc.properties"></properties>
-  
+  <typeAliases>
+  	<typeAlias alias="DeptDTO" type="com.dto.DeptDTO" />
+  	<package name="com.dto" />
+  </typeAliases>
   <environments default="development">
     <environment id="development">
       <transactionManager type="JDBC"/>
@@ -23,5 +26,6 @@
   </environments>
   <mappers>
     <mapper resource="com/config/DeptMapper.xml"/>
+    <mapper resource="com/config/EmpMapper.xml"/>
   </mappers>
 </configuration>

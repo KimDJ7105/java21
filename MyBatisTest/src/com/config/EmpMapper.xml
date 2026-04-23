@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.config.EmpMapper">
+  <insert id="insertDynamic" parameterType="arraylist">
+    insert into emp (empno, ename, job, mgr, hiredate, sal, comm, deptno )
+	<foreach item="dto" open="values " separator="," collection="list"> 
+      (#{dto.empno}, #{dto.ename}, #{dto.job}, #{dto.mgr}, now(), #{dto.sal}, #{dto.comm}, #{dto.deptno} )
+	</foreach>
+  </insert>
+  
+  <delete id="deleteEmpnoDynamic" parameterType="arraylist">
+    delete from emp
+    <where>
+	  <foreach item="empno" open="empno In(" separator="," close=")" collection="list"> 
+        #{empno}
+      </foreach>
+    </where> 
+  </delete>
+  
+  <select id="selectNameDynaic" resultType="EmpDTO" parameterType="list">
+    select empno, ename, sal from emp
+    <where>
+      <foreach item="ename" open="ename In(" separator=","
+        close=")" collection="list">
+        #{ename}
+      </foreach>
+    </where>
+  </select>
+  
+  <select id="selectIf" resultType="EmpDTO" parameterType="EmpDTO">
+    select empno, ename, sal, job from emp
+    <where>
+      <if test="job != null">
+        job = #{job}
+      </if>
+    </where>
+  </select>
+  
+  <select id="selectIf2" resultType="EmpDTO" parameterType="EmpDTO">
+    select empno, ename, sal, job from emp
+    <where>
+      <if test="job != null">
+        job = #{job} 
+      </if>
+      <if test="sal != 0">
+        <![CDATA[ 
+        AND sal > #{sal} 
+        ]]>
+      </if>
+    </where>
+  </select>
+  
+  <update id="updateIf" parameterType="EmpDTO">
+	update emp
+	<set>
+	  mgr=#{mgr},
+	  <if test="sal != 0">
+	    sal = #{sal},
+  	</if>
+  	<if test="ename != null">
+	    ename = #{ename},
+	  </if>
+	</set>
+	<where>
+	  empno = #{empno}
+	</where>
+  </update>
+  
+  <select id="selectChoose" resultType="EmpDTO" parameterType="EmpDTO">
+  select empno, ename, sal, job from emp
+  <where>
+    <choose>
+        <when test="job =='salesman'">
+          <![CDATA[sal > 1500]]>
+        </when>
+        <when test="job =='clerk'">
+          <![CDATA[sal > 2500]]>
+        </when>
+        <otherwise>
+          <![CDATA[sal > 3000]]>
+        </otherwise>
+      </choose>
+    </where>
+  </select>
+  
+  <select id="singleColumn" resultType="int">
+  	select count(*) from emp
+  </select>
+  
+</mapper>
