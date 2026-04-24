@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.config.EmpMapper">
+  <!-- Select -->
+  <select id="findAll" resultType="EmpDTO">
+  	select * from emp order by empno
+  </select>
+  <!-- Insert -->
+  <insert id="insert" parameterType="EmpDTO">
+    insert into emp (empno, ename, sal, deptno)
+    values (#{empno}, #{ename}, #{sal}, #{deptno})
+  </insert>
+  
+  <insert id="insertComplete" parameterType="EmpDTO">
+    insert into emp (empno, ename, job, mgr, hiredate, sal, comm, deptno )
+    values (#{empno}, #{ename}, #{job}, #{mgr}, #{hiredate}, #{sal}, #{comm}, #{deptno})
+  </insert>
+  <!-- Update -->
+  <update id="update" parameterType="EmpDTO">
+    update emp
+    set ename=#{ename}, sal=#{sal}
+    where empno=#{empno}
+  </update>
+  <!-- Delete -->
+  <delete id="delete" parameterType="int">
+    delete from emp
+    where empno=#{empno}
+  </delete>
+</mapper>
