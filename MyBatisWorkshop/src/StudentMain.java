@@ -8,13 +8,18 @@ import java.util.Scanner;
 import org.apache.ibatis.session.SqlSession;
 
 import com.config.MySqlSessionFactory;
+import com.dao.StudentDAO;
+import com.dto.GradeDTO;
 import com.dto.StudentDTO;
+import com.dto.StudentJoinDTO;
+import com.service.StudentService;
+import com.service.StudentServiceImpl;
 
 public class StudentMain {
 
 	public static void main(String[] args) {
-		
-		SqlSession session = MySqlSessionFactory.getSession();
+		StudentService service = new StudentServiceImpl();
+		service.setDao(new StudentDAO());
 		
 		
 		int select_num = -1;
@@ -28,6 +33,8 @@ public class StudentMain {
 			System.out.println("3. 학생 입학년도 범위 검색.");	
 			System.out.println("4. 학생 학번으로 다중 검색 (쉼표 구분)");	
 			System.out.println("5. 학생 휴학 일괄 수정");			
+			System.out.println("6. 학과 정원 일괄 수정");			
+			System.out.println("7. 학생 학점 검색");			
 			System.out.println("0. 종료");
 			System.out.println("******************************");
 			System.out.print("메뉴 입력 =>");
@@ -35,7 +42,7 @@ public class StudentMain {
 			
 			
 			if(select_num == 1) {
-				List<StudentDTO> list = session.selectList("com.config.StudentMapper.list");
+				List<StudentDTO> list = service.list();
 				
 				int sum = 0;
 				for(StudentDTO dto : list) {
@@ -53,7 +60,7 @@ public class StudentMain {
 				dto.setStudent_name(target);
 				
 				
-				List<StudentDTO> list = session.selectList("com.config.StudentMapper.listByName",dto);
+				List<StudentDTO> list = service.listByName(dto);
 				
 				int sum = 0;
 				for(StudentDTO d : list) {
@@ -73,7 +80,7 @@ public class StudentMain {
 				map.put("x", begin);
 				map.put("y", end);
 				
-				List<StudentDTO> list = session.selectList("com.config.StudentMapper.listByEntranceDate", map);
+				List<StudentDTO> list = service.selectList(map);
 				
 				int sum = 0;
 				for(StudentDTO dto : list) {
@@ -88,10 +95,10 @@ public class StudentMain {
 				System.out.print("검색할 학생의 학번을 입력하시오=>");
 				String input = sc.next();
 				
-				List<String> num_array = Arrays.asList(input.split(","));
+				List<String> num_list = Arrays.asList(input.split(","));
 				
 				
-				List<StudentDTO> list = session.selectList("com.config.StudentMapper.listByNoDynamic",num_array);
+				List<StudentDTO> list = service.listByNoDynamic(num_list);
 				
 				int sum = 0;
 				for(StudentDTO dto : list) {
@@ -107,14 +114,40 @@ public class StudentMain {
 				
 				List<String> no_list = Arrays.asList(input.split(","));
 				
-			    int n = session.update("com.config.StudentMapper.updateAbsenceByNo", no_list);
+			    int n = service.updateAbsenceByNo(no_list);
 			    if(n> 0) System.out.println("총 변경된 학생 수 : " + n + " 명");
 				
 			}
+			else if(select_num == 6) {
+				
+				int n = service.updateDeptCapacity();
+				if(n> 0) System.out.println("변경된 학과 수 : " + n );
+				
+			}
+			else if(select_num == 7) {
+				StudentDTO dto = new StudentDTO();
+				System.out.print("검색할 학생의 학번을 입력하시오=>");
+				dto.setStudent_no(sc.next());
+				
+				
+				List<StudentJoinDTO> list = service.listWithGrade(dto);
+					
+				for(StudentJoinDTO s : list) {
+					for(GradeDTO g : s.getGradeList()) {
+						System.out.println(g.getTerm_no() + "   " + 
+								s.getStudent_no() + "   " +
+								s.getStudent_name() + "   " + 
+								g.getClassDto().getClass_name() + "   " +
+								g.getPoint() + "   " +
+								g.getGrade());
+					}
+				}	
+				
+			}
+			
 		} // while
 		
 		sc.close();
-		session.close();
 	}
 
 }

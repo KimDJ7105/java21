@@ -47,4 +47,42 @@
   	</where>
   </update>
   
+  <update id="updateDeptCapacity">
+    UPDATE tb_department SET capacity = capacity + ( CASE 
+      WHEN capacity BETWEEN 0 AND 20 THEN 5
+      WHEN capacity BETWEEN 21 AND 25 THEN 4
+      WHEN capacity BETWEEN 26 AND 30 THEN 3
+      ELSE 0 END )
+      WHERE capacity BETWEEN 0 AND 30
+  </update>
+  
+  <resultMap id="studentGradeMap" type="StdJoin">
+    <id property="student_no" column="student_no" />
+    <result property="student_name" column="student_name" />
+    <collection property="gradeList" ofType="GradeDTO">
+      <result property="term_no" column="term_no" />
+      <result property="point" column="point" />
+      <result property="grade" column="grade" />
+      <association property="classDto" javaType="ClassDTO">
+        <result property="class_name" column="class_name" />
+      </association>
+    </collection>
+  </resultMap>
+  
+  <select id="listWithGrade" resultMap="studentGradeMap" parameterType="StudentDTO">
+    <![CDATA[ 
+    select term_no, student_no, student_name, class_name, point, 
+    		case 
+    		when point between 0 and 1.9 then 'F학점' 
+    		when point between 2.0 and 2.9 then 'D학점' 
+    		when point between 3.0 and 3.4 then 'C학점' 
+    		when point between 3.5 and 3.9 then 'B학점' 
+    		when point >= 4.0 then 'A학점' end as 'grade'
+    from tb_student join tb_grade using(student_no) 
+    	join tb_class using(class_no)
+    where student_no = #{student_no}
+   ]]>
+  </select>
+  
+  
 </mapper>
