@@ -5,31 +5,32 @@
 <mapper namespace="com.config.StudentMapper">
   <select id="list" resultType="StdDTO">
     <![CDATA[ 
-    select student_no, student_name, concat(left(student_ssn,8),'******'), 
-    if(char_length(student_address) > 10, concat(left(student_address,10),'...'),student_address), 
-    date_format(entrance_date,'%Y/%m/%d'), absence_yn from tb_student
+    select student_no, student_name, concat(left(student_ssn,8),'******') as 'student_ssn', 
+    if(char_length(student_address) > 10, concat(left(student_address,10),'...'),student_address) as 'student_address', 
+    date_format(entrance_date,'%Y/%m/%d') as 'entrance_date', 
+    absence_yn from tb_student
     ]]>
   </select>
   
   <select id="listByName" resultType="StdDTO" parameterType="StdDTO">
-    select student_no, student_name, concat(left(student_ssn,8),'******'),
-    if(student_address is not null, if(char_length(student_address) > 10, concat(left(student_address,10),'...'),student_address), ' ***주소 미상*** '), 
-    date_format(entrance_date,'%Y/%m/%d'), absence_yn from tb_student
+    select student_no, student_name, concat(left(student_ssn,8),'******') as 'student_ssn',
+    if(student_address is not null, if(char_length(student_address) > 10, concat(left(student_address,10),'...'),student_address), ' ***주소 미상*** ') as 'student_address', 
+    date_format(entrance_date,'%Y/%m/%d') as 'entrance_date', absence_yn from tb_student
     where student_name like CONCAT('%', #{student_name}, '%')
   </select>
   
   <select id="listByEntranceDate" resultType="StdDTO" parameterType="hashmap">
-    select student_no, student_name, concat(left(student_ssn,8),'******'), 
-    if(student_address is not null, if(char_length(student_address) > 10, concat(left(student_address,10),'...'),student_address), ' ***주소 미상*** '), 
-    date_format(entrance_date,'%Y/%m/%d'), absence_yn 
+    select student_no, student_name, concat(left(student_ssn,8),'******') as 'student_ssn', 
+    if(student_address is not null, if(char_length(student_address) > 10, concat(left(student_address,10),'...'),student_address), ' ***주소 미상*** ') as 'student_address', 
+    date_format(entrance_date,'%Y/%m/%d') as 'entrance_date', absence_yn 
     from tb_student
     where entrance_date between CONCAT(#{x}, '-01-01') and CONCAT(#{y},'-12-31') order by entrance_date desc
   </select>  
   
   <select id="listByNoDynamic" resultType="StdDTO" parameterType="list">
-  	select student_no, student_name, concat(left(student_ssn,8),'******'), 
-  	if(student_address is not null, if(char_length(student_address) > 10, concat(left(student_address,10),'...'),student_address), ' ***주소 미상*** '),
-  	date_format(entrance_date,'%Y/%m/%d'), absence_yn 
+  	select student_no, student_name, concat(left(student_ssn,8),'******') as 'student_ssn', 
+  	if(student_address is not null, if(char_length(student_address) > 10, concat(left(student_address,10),'...'),student_address), ' ***주소 미상*** ') as 'student_address',
+  	date_format(entrance_date,'%Y/%m/%d') as 'entrance_date', absence_yn 
   	from tb_student
   	<where>
   	  <foreach item="student_no" open="student_no in (" separator="," close=")" collection="list">
@@ -84,5 +85,8 @@
    ]]>
   </select>
   
+  <select id="totalCount" resultType="int">
+    select count(*) from tb_student
+ </select>
   
 </mapper>

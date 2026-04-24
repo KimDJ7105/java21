@@ -35,6 +35,7 @@ public class StudentMain {
 			System.out.println("5. 학생 휴학 일괄 수정");			
 			System.out.println("6. 학과 정원 일괄 수정");			
 			System.out.println("7. 학생 학점 검색");			
+			System.out.println("8. 전체 학생 목록 - 페이징");			
 			System.out.println("0. 종료");
 			System.out.println("******************************");
 			System.out.print("메뉴 입력 =>");
@@ -46,7 +47,12 @@ public class StudentMain {
 				
 				int sum = 0;
 				for(StudentDTO dto : list) {
-					System.out.println(dto);
+					System.out.println(dto.getStudent_no() + "   " + 
+									dto.getStudent_name() + "   " + 
+									dto.getStudent_ssn() + "   " + 
+									dto.getStudent_address() + "   " +
+									dto.getEntrance_date() + "   " +
+									dto.getAbsence_yn());
 					sum++;
 				}	
 				
@@ -64,7 +70,12 @@ public class StudentMain {
 				
 				int sum = 0;
 				for(StudentDTO d : list) {
-					System.out.println(d);
+					System.out.println(dto.getStudent_no() + "   " + 
+							d.getStudent_name() + "   " + 
+							d.getStudent_ssn() + "   " + 
+							d.getStudent_address() + "   " +
+							d.getEntrance_date() + "   " +
+							d.getAbsence_yn());
 					sum++;
 				}	
 				
@@ -84,7 +95,12 @@ public class StudentMain {
 				
 				int sum = 0;
 				for(StudentDTO dto : list) {
-					System.out.println(dto);
+					System.out.println(dto.getStudent_no() + "   " + 
+							dto.getStudent_name() + "   " + 
+							dto.getStudent_ssn() + "   " + 
+							dto.getStudent_address() + "   " +
+							dto.getEntrance_date() + "   " +
+							dto.getAbsence_yn());
 					sum++;
 				}	
 				
@@ -102,7 +118,12 @@ public class StudentMain {
 				
 				int sum = 0;
 				for(StudentDTO dto : list) {
-				    System.out.println(dto);
+					System.out.println(dto.getStudent_no() + "   " + 
+							dto.getStudent_name() + "   " + 
+							dto.getStudent_ssn() + "   " + 
+							dto.getStudent_address() + "   " +
+							dto.getEntrance_date() + "   " +
+							dto.getAbsence_yn());
 					sum++;
 				}	
 				
@@ -141,7 +162,47 @@ public class StudentMain {
 								g.getPoint() + "   " +
 								g.getGrade());
 					}
-				}	
+				}		
+			}
+			else if(select_num==8) {
+				System.out.println("페이지당 보여줄 레코드 수=>");
+				int perPage = sc.nextInt();
+				if(perPage == 0) {
+					System.out.println("0개의 레코드 표시 불가");
+					continue;
+				}
+				int curPage = 1;
+				int totalCount = service.totalCount();
+				System.out.println("총 레코드 수 : " + totalCount);
+				int totalPages = Math.ceilDiv(totalCount, perPage);
+				
+				while(true) {
+					// 페이지를 가져와서 출력
+					List<StudentDTO> list = service.listPaging((curPage-1)*perPage, perPage);
+					
+					for(StudentDTO dto : list) {
+						System.out.println(dto.getStudent_no() + "   " + 
+								dto.getStudent_name() + "   " + 
+								dto.getStudent_ssn() + "   " + 
+								dto.getStudent_address() + "   " +
+								dto.getEntrance_date() + "   " +
+								dto.getAbsence_yn());
+					}
+					System.out.println(curPage + " / " + totalPages);
+					System.out.println("N : 다음페이지 B : 이전페이지 Q : 메인화면");
+					String s = sc.next();
+					if(s.equalsIgnoreCase("n")) {
+						curPage += 1;
+						if(curPage > totalPages) curPage = totalPages;
+					}
+					else if (s.equalsIgnoreCase("b")) {
+						curPage -= 1;
+						if(curPage < 1) curPage = 1;
+					}
+					else if (s.equalsIgnoreCase("q")) {
+						break;
+					}
+				}
 				
 			}
 			

@@ -3,6 +3,7 @@ package com.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 
 import com.dto.StudentDTO;
@@ -34,5 +35,13 @@ public class StudentDAO {
 	
 	public List<StudentJoinDTO> listWithGrade(SqlSession session, StudentDTO dto) {
 		return session.selectList("com.config.StudentMapper.listWithGrade", dto);
+	}
+	
+	public List<StudentDTO> listPaging(SqlSession session, int offset, int limit) {
+		return session.selectList("com.config.StudentMapper.list", null, new RowBounds(offset, limit));
+	}
+	
+	public int totalCount(SqlSession session) {
+		return session.selectOne("totalCount");
 	}
 }

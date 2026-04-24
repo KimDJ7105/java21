@@ -68,4 +68,18 @@ public class StudentServiceImpl implements StudentService {
 			return dao.listWithGrade(session, dto);
 		}
 	}
+	
+	@Override
+	public List<StudentDTO> listPaging(int offset, int limit) {
+		try (SqlSession session = MySqlSessionFactory.getSession()){
+			return dao.listPaging(session, offset, limit);
+		}
+	}
+	
+	@Override
+	public int totalCount() {
+		try (SqlSession session = MySqlSessionFactory.getSession()){
+			return dao.totalCount(session);
+		}
+	}
 }

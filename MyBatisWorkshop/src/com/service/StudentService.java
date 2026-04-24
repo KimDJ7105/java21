@@ -25,4 +25,8 @@ public interface StudentService {
 
 	List<StudentJoinDTO> listWithGrade(StudentDTO dto);
 
+	List<StudentDTO> listPaging(int offset, int limit);
+
+	int totalCount();
+
 }
