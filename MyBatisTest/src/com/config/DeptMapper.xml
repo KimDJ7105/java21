@@ -53,4 +53,31 @@
   delete from dept
   where deptno=#{deptno}
   </delete>
+  
+  <!-- emp join select -->
+  <resultMap id="deptempJoinMap" type="DeptJoin">
+    <id property="deptno" column="deptno"/>
+    <result property="dname" column="dname" />
+    <result property="loc" column="loc" />
+    <!-- List<EmpDTO> empList 설정 -->
+    <collection property="empList" ofType="EmpDTO">
+    <!-- property는 DeptJoin 의 List 변수 이름
+         ofType은 List가 저장할 데이터 타입 이름 -->
+      <id property="empno" column="empno"/>
+      <result property="ename" column="ename" />
+      <result property="job" column="job" />
+      <result property="mgr" column="mgr" />
+      <result property="hiredate" column="hiredate" />
+      <result property="sal" column="sal" />
+      <result property="comm" column="comm" />
+      <result property="deptno" column="deptno" />
+    </collection>
+  </resultMap>
+
+  <select id="deptempJoin" resultMap="deptempJoinMap">
+    select *
+    from emp join dept on emp.deptno = dept.deptno
+    order by empno desc
+  </select>
+  
 </mapper>

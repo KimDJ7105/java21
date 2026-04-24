@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 
 import com.config.MySqlSessionFactory;
@@ -77,6 +78,16 @@ public class EmpMain {
 		//단일 컬럼 호출
 		n = session.selectOne("com.config.EmpMapper.singleColumn");
 		System.out.println(n);
+		
+		//페이징 처리
+		int curPage = 1; // 현재 페이지
+		int perPage = 3; // 페이지당 보여줄 개수 
+		int offset=(curPage - 1)*perPage;
+		
+		List<EmpDTO> list4 = session.selectList("com.config.EmpMapper.orderedSelect", null, 
+				new RowBounds(offset,perPage));
+		
+		System.out.println(list4);
 		
 		session.rollback();
 		session.close();

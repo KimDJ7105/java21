@@ -89,4 +89,61 @@
   	select count(*) from emp
   </select>
   
+  <select id="orderedSelect" resultType="EmpDTO">
+    select * from emp order by empno desc
+  </select>
+  
+  <!--//////////////////////////////////////////////-->
+  
+  <resultMap id="userResultMap" type="Emp">
+    <id property="empno" column="empno"/>
+    <result property="username" column="ename" />
+    <result property="job" column="job" />
+    <result property="mgr" column="mgr" />
+    <result property="hiredate" column="hiredate" />
+    <result property="salary" column="sal" />
+    <result property="commission" column="comm" />
+    <result property="deptno" column="deptno" />
+  </resultMap>
+  
+  <select id="findAll" resultType="Emp">
+    select empno, ename, job, mgr, hiredate, sal, comm, deptno
+    from emp order by empno desc;
+  </select>
+  
+  <select id="findAllToMap" resultMap="userResultMap">
+    select empno, ename, job, mgr, hiredate, sal, comm, deptno
+    from emp order by empno desc;
+  </select>
+  <!--//////////////////////////////////////////////-->
+  
+  <resultMap id="empdeptJoinMap" type="EmpJOIN">
+    <id property="empno" column="empno" />
+    <result property="ename" column="ename" />
+    <result property="job" column="job" />
+    <result property="mgr" column="mgr" />
+    <result property="hiredate" column="hiredate" />
+    <result property="sal" column="sal" />
+    <result property="comm" column="comm" />
+    <!-- Dept와 조인된 결과값을 저장하는 방법 -->
+    <association property="dto" javaType="DeptDTO">
+      <!-- property는 EmpJoin 내부의 변수명 javaType은
+           해당 변수의 class를 의미한다.  -->
+      <result property="deptno" column="xxx" />
+      <result property="dname" column="yyy" />
+      <result property="loc" column="zzz" />
+    </association>
+  </resultMap>
+  
+  <select id="empdeptJoin" resultMap="empdeptJoinMap">
+    select empno, ename, job, mgr, hiredate, 
+           sal, comm,
+           dept.deptno as xxx,
+           dept.dname as yyy,
+           dept.loc as zzz
+    from emp join dept on emp.deptno = dept.deptno
+    order by empno desc
+  </select>
+  <!-- //////////////////////////////////////////////////// -->
+  
 </mapper>
